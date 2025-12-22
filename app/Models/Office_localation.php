@@ -9,4 +9,7 @@ class Office_localation extends Model
 {
     /** @use HasFactory<\Database\Factories\OfficeLocalationFactory> */
     use HasFactory;
+    protected $fillable = [
+        'room_number'
+    ];
 }
