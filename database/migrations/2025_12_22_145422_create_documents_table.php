@@ -13,7 +13,24 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+
+            $table->foreignId('patient_id')
+                ->references('user_id')
+                ->on('patients')
+                ->onDelete('cascade');
+
+            $table->foreignId('doctor_id')
+                ->references('user_id')
+                ->on('doctors')
+                ->onDelete('cascade');
+
+            $table->string('type', 50);
+            $table->string('file_path', 255);
+
+            // SQL: created_at DATETIME DEFAULT GETDATE()
+            $table->timestamp('created_at')->useCurrent();
+
+            // nincs updated_at az SQL-ben, ezért nem használunk timestamps()-et
         });
     }
 
