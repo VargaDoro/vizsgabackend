@@ -2,49 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Office_localation;
-use App\Http\Requests\StoreOffice_localationRequest;
-use App\Http\Requests\UpdateOffice_localationRequest;
+use App\Models\OfficeLocation;
+use App\Http\Requests\StoreOfficeLocationRequest;
+use App\Http\Requests\UpdateOfficeLocationRequest;
 
-class OfficeLocalationController extends Controller
+class OfficeLocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $locations = OfficeLocation::with('doctors')->get();
+        return response()->json($locations);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreOffice_localationRequest $request)
+    public function store(StoreOfficeLocationRequest $request)
     {
-        //
+        $location = new OfficeLocation();
+        $location->fill($request->all());
+        $location->save();
+        return response()->json($location, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Office_localation $office_localation)
+    public function show(string $id)
     {
-        //
+        return OfficeLocation::with('doctors')->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateOffice_localationRequest $request, Office_localation $office_localation)
+    public function update(UpdateOfficeLocationRequest $request, string $id)
     {
-        //
+        $location = OfficeLocation::findOrFail($id);
+        $location->fill($request->all());
+        $location->save();
+        return response()->json($location, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Office_localation $office_localation)
+    public function destroy(string $id)
     {
-        //
+        $location = OfficeLocation::findOrFail($id);
+        $location->delete();
+        return response()->json(null, 200);
     }
 }

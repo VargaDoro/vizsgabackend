@@ -2,49 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Document_type;
-use App\Http\Requests\StoreDocument_typeRequest;
-use App\Http\Requests\UpdateDocument_typeRequest;
+use App\Models\DocumentType;
+use App\Http\Requests\StoreDocumentTypeRequest;
+use App\Http\Requests\UpdateDocumentTypeRequest;
 
 class DocumentTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $types = DocumentType::with('documents')->get();
+        return response()->json($types);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDocument_typeRequest $request)
+    public function store(StoreDocumentTypeRequest $request)
     {
-        //
+        $type = new DocumentType();
+        $type->fill($request->all());
+        $type->save();
+        return response()->json($type, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Document_type $document_type)
+    public function show(string $id)
     {
-        //
+        return DocumentType::with('documents')->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDocument_typeRequest $request, Document_type $document_type)
+    public function update(UpdateDocumentTypeRequest $request, string $id)
     {
-        //
+        $type = DocumentType::findOrFail($id);
+        $type->fill($request->all());
+        $type->save();
+        return response()->json($type, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Document_type $document_type)
+    public function destroy(string $id)
     {
-        //
+        $type = DocumentType::findOrFail($id);
+        $type->delete();
+        return response()->json(null, 200);
     }
 }

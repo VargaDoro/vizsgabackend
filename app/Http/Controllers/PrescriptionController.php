@@ -8,43 +8,37 @@ use App\Http\Requests\UpdatePrescriptionRequest;
 
 class PrescriptionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $prescriptions = Prescription::with(['doctor', 'patient'])->get();
+        return response()->json($prescriptions);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePrescriptionRequest $request)
     {
-        //
+        $prescription = new Prescription();
+        $prescription->fill($request->all());
+        $prescription->save();
+        return response()->json($prescription, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Prescription $prescription)
+    public function show(string $id)
     {
-        //
+        return Prescription::with(['doctor', 'patient'])->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePrescriptionRequest $request, Prescription $prescription)
+    public function update(UpdatePrescriptionRequest $request, string $id)
     {
-        //
+        $prescription = Prescription::findOrFail($id);
+        $prescription->fill($request->all());
+        $prescription->save();
+        return response()->json($prescription, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Prescription $prescription)
+    public function destroy(string $id)
     {
-        //
+        $prescription = Prescription::findOrFail($id);
+        $prescription->delete();
+        return response()->json(null, 200);
     }
 }

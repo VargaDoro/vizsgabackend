@@ -8,43 +8,37 @@ use App\Http\Requests\UpdateDocumentRequest;
 
 class DocumentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $documents = Document::with(['patient', 'doctor', 'type'])->get();
+        return response()->json($documents);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreDocumentRequest $request)
     {
-        //
+        $document = new Document();
+        $document->fill($request->all());
+        $document->save();
+        return response()->json($document, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Document $document)
+    public function show(string $id)
     {
-        //
+        return Document::with(['patient', 'doctor', 'type'])->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDocumentRequest $request, Document $document)
+    public function update(UpdateDocumentRequest $request, string $id)
     {
-        //
+        $document = Document::findOrFail($id);
+        $document->fill($request->all());
+        $document->save();
+        return response()->json($document, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Document $document)
+    public function destroy(string $id)
     {
-        //
+        $document = Document::findOrFail($id);
+        $document->delete();
+        return response()->json(null, 200);
     }
 }

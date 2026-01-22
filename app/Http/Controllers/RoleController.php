@@ -8,43 +8,37 @@ use App\Http\Requests\UpdateRoleRequest;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $roles = Role::with('users')->get();
+        return response()->json($roles);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRoleRequest $request)
     {
-        //
+        $role = new Role();
+        $role->fill($request->all());
+        $role->save();
+        return response()->json($role, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Role $role)
+    public function show(string $id)
     {
-        //
+        return Role::findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $request, string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->fill($request->all());
+        $role->save();
+        return response()->json($role, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Role $role)
+    public function destroy(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return response()->json(null, 200);
     }
 }

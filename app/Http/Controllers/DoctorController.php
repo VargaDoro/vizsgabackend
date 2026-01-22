@@ -8,43 +8,37 @@ use App\Http\Requests\UpdateDoctorRequest;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $doctors = Doctor::with(['user', 'officeLocation'])->get();
+        return response()->json($doctors);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreDoctorRequest $request)
     {
-        //
+        $doctor = new Doctor();
+        $doctor->fill($request->all());
+        $doctor->save();
+        return response()->json($doctor, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Doctor $doctor)
+    public function show(string $id)
     {
-        //
+        return Doctor::with(['user', 'officeLocation'])->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDoctorRequest $request, Doctor $doctor)
+    public function update(UpdateDoctorRequest $request, string $id)
     {
-        //
+        $doctor = Doctor::findOrFail($id);
+        $doctor->fill($request->all());
+        $doctor->save();
+        return response()->json($doctor, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Doctor $doctor)
+    public function destroy(string $id)
     {
-        //
+        $doctor = Doctor::findOrFail($id);
+        $doctor->delete();
+        return response()->json(null, 200);
     }
 }

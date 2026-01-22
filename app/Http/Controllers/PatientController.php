@@ -8,43 +8,37 @@ use App\Http\Requests\UpdatePatientRequest;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $patients = Patient::with('user')->get();
+        return response()->json($patients);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePatientRequest $request)
     {
-        //
+        $patient = new Patient();
+        $patient->fill($request->all());
+        $patient->save();
+        return response()->json($patient, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Patient $patient)
+    public function show(string $id)
     {
-        //
+        return Patient::with('user')->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePatientRequest $request, Patient $patient)
+    public function update(UpdatePatientRequest $request, string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->fill($request->all());
+        $patient->save();
+        return response()->json($patient, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Patient $patient)
+    public function destroy(string $id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        $patient->delete();
+        return response()->json(null, 200);
     }
 }

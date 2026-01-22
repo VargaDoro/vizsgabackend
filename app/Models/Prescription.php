@@ -23,19 +23,14 @@ class Prescription extends Model
         'valid_until' => 'date',
     ];
 
-    /**
-     * Kapcsolat: felíró orvos
-     */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class, 'doctor_id', 'user_id');
+        return $this->belongsTo(Doctor::class, 'doctor_id');
     }
 
-    /**
-     * Kapcsolat: beteg
-     */
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'patient_id', 'user_id');
+        return $this->belongsTo(Patient::class, 'patient_id');
     }
+
 }

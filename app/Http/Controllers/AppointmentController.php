@@ -8,43 +8,37 @@ use App\Http\Requests\UpdateAppointmentRequest;
 
 class AppointmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $appointments = Appointment::with(['doctor', 'patient'])->get();
+        return response()->json($appointments);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAppointmentRequest $request)
     {
-        //
+        $appointment = new Appointment();
+        $appointment->fill($request->all());
+        $appointment->save();
+        return response()->json($appointment, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Appointment $appointment)
+    public function show(string $id)
     {
-        //
+        return Appointment::with(['doctor', 'patient'])->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAppointmentRequest $request, Appointment $appointment)
+    public function update(UpdateAppointmentRequest $request, string $id)
     {
-        //
+        $appointment = Appointment::findOrFail($id);
+        $appointment->fill($request->all());
+        $appointment->save();
+        return response()->json($appointment, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Appointment $appointment)
+    public function destroy(string $id)
     {
-        //
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+        return response()->json(null, 200);
     }
 }
