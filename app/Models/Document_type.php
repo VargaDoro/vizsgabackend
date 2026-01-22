@@ -9,4 +9,7 @@ class Document_type extends Model
 {
     /** @use HasFactory<\Database\Factories\DocumentTypeFactory> */
     use HasFactory;
+    protected $fillable = [
+        'type',
+    ];
 }
