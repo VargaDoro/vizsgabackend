@@ -13,7 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with('role')->get();
+        return response()->json($users);
     }
 
     /**
@@ -21,30 +22,38 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $user = new User();
+        $user->fill($request->all());
+        $user->save();
+        return response()->json($user, 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(String $id)
     {
-        //
+        return User::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, String $id)
     {
-        //
+        $user = User::fing($id);
+        $user = fill($request->all());
+        $user = save();
+        return response()->json($user,200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(String $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(null, 200);
     }
 }
