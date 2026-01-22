@@ -17,4 +17,15 @@ class Doctor extends Model
         'phone_number',
         'office_location',
     ];
+
+        public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function officeLocation()
+    {
+        return $this->belongsTo(OfficeLocation::class);
+    }
+
 }

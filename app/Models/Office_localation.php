@@ -12,4 +12,9 @@ class Office_localation extends Model
     protected $fillable = [
         'room_number'
     ];
+    
+    public function doctors()
+    {
+        return $this->hasMany(Doctor::class);
+    }
 }

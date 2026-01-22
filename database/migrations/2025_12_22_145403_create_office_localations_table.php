@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('office_localations', function (Blueprint $table) {
             $table->id();
+            $table->string('room_number')->unique();
             $table->timestamps();
         });
     }
