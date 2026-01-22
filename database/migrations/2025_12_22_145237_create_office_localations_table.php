@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('office_localations', function (Blueprint $table) {
-            $table->id();
-            $table->string('room_number')->unique();
+        Schema::create('office_locations', function (Blueprint $table) {
+            $table->id(); // BIGINT unsigned
+            $table->string('room_number', 20)->unique();
+            $table->string('building', 50)->nullable();
             $table->timestamps();
         });
     }

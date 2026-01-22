@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
     Schema::create('doctors', function (Blueprint $table) {
-        $table->integer('user_id')->primary();
-        $table->string('name');
-        $table->string('license_number')->unique();
-        $table->string('specialization');
-        $table->string('phone_number')->nullable();
+        $table->unsignedBigInteger('user_id')->primary();
+        $table->string('name', 100);
+        $table->string('license_number', 50)->unique();
+        $table->string('specialization', 100);
+        $table->string('phone_number', 20)->nullable();
         $table->unsignedBigInteger('office_location_id')->nullable();
         $table->foreign('user_id')
             ->references('id')
