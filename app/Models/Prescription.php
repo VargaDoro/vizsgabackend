@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Prescription extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-        'id',
         'doctor_id',
         'patient_id',
         'medicine_name',
@@ -17,4 +17,25 @@ class Prescription extends Model
         'issued_at',
         'valid_until',
     ];
+
+    protected $casts = [
+        'issued_at' => 'date',
+        'valid_until' => 'date',
+    ];
+
+    /**
+     * Kapcsolat: felíró orvos
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class, 'doctor_id', 'user_id');
+    }
+
+    /**
+     * Kapcsolat: beteg
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'user_id');
+    }
 }
